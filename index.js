@@ -27,8 +27,30 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     client.connect();
-    const productCollection = client.db('productList').collection('product');
-    console.log("orderListTableServer successfully connected to MongoDB!");
+    const productCollection = client.db('orderListTable').collection('product');
+    const orderCollection = client.db('orderListTable').collection('order');
+    // console.log("orderListTableServer successfully connected to MongoDB!");
+
+    /* for productCollection */
+
+    // 01. get all products data
+    app.get('/product', async (req, res) => {
+        const query = {};
+        const cursor = productCollection.find(query);
+        const products = await cursor.toArray();
+        res.send(products);
+    });
+
+    /* for orderCollection */
+
+    // 01. get all orders data
+    app.get('/order', async (req, res) => {
+        const query = {};
+        const cursor = orderCollection.find(query);
+        const orders = await cursor.toArray();
+        res.send(orders);
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
